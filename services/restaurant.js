@@ -1,4 +1,4 @@
-const restaurant = (db) => {
+const Restaurant = (db) => {
 
     async function getTables() {
         // get all the available tables
@@ -23,7 +23,9 @@ const restaurant = (db) => {
     async function getBookedTablesForUser(username) {
         // get user table booking
     }
+    async function editTableBooking() {
 
+    }
     return {
         getTables,
         bookTable,
@@ -35,4 +37,4 @@ const restaurant = (db) => {
     }
 }
 
-export default restaurant;
+export default Restaurant;
