@@ -4,7 +4,18 @@
 //need to create an instance of the database connection db
 //create an instance of the service function 'Restaurant'
 //parse db inside the restaurant instance
-//
+
+//get all tables to show. Call the getTables function from services. Make the route function async.
+//Pass the tablesData as an object to tables.
+
+//create /book post route to gather the 
+//data 1. username, 2phone number, 3tableid selected, and 4 capacity desired from the form /book and pass the data to the relevant functions
+
+//create bookings route to display the booked table, the number of people and who booked it 
+
+//create the cancel route to cancel the reservation of the user
+//cancel using the table name, use a route to get the form data
+
 
 //import express  framework
 import express from 'express';
@@ -47,20 +58,48 @@ app.engine('handlebars', handlebarSetup);
 app.set('view engine', 'handlebars');
 
 
-app.get("/", (req, res) => {
-res.send('hi')
-    // res.render('index', {
-    //     tables: [{}, {}, { booked: true }, {}, {}, {}]
-    // })
-});
-
-
-app.get("/bookings", (req, res) => {
-    res.render('bookings', {
-        tables: [{}, {}, {}, {}, {}, {}]
+app.get("/", async (req, res) => {
+    let tablesData = await restaurant.getTables();
+    // console.log(tablesData[0].table_name);
+    res.render('index', {
+        tables: tablesData
     })
 });
 
+
+app.post('/book', async (req, res) => {
+    let username = req.body.username;
+    let phone_no = req.body.phone_number;
+    let booking_size = req.body.booking_size;
+    let tableId = req.body.tableId;
+
+    // console.log(username, phone_no, booking_size, tableId);
+    let isTableBooked = await restaurant.isTableBooked(tableId);
+    if (!isTableBooked) {
+        await restaurant.bookTable(username, phone_no, booking_size, tableId)
+    }
+
+    res.redirect('/bookings')
+})
+
+app.get("/bookings", async (req, res) => {
+    let getBookedTables = await restaurant.getBookedTables();
+    // console.log(getBookedTables);
+    res.render('bookings', {
+        tables: getBookedTables
+    })
+});
+
+app.get('/bookings/:username', async (req, res) => {
+    req.params.username;
+
+})
+
+app.post('/cancel', async (req, res) => {
+    let tableToCancel = req.body.toCancel;
+    await restaurant.cancelTableBooking(tableToCancel)
+    res.redirect('/bookings')
+})
 
 var portNumber = process.env.PORT || 3000;
 
