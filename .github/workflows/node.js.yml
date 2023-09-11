@@ -24,8 +24,8 @@ jobs:
     - name: Install dependencies
       run: npm install
     - name: create postgresql tables
-      run: PGPASSWORD=coder123 psql -h localhost -U coder -d restuarant_bookings -a -f ./sql/tables.sql
+      run: PGPASSWORD=codex123 psql -h localhost -U coder -d restuarant_bookings -a -f ./sql/tables.sql
     - name: populate data into table
-      run: PGPASSWORD=coder123 psql -h localhost -U coder -d restuarant_bookings -a -f ./sql/data.sql
+      run: PGPASSWORD=codex123 psql -h localhost -U coder -d restuarant_bookings -a -f ./sql/data.sql
       env:
         DATABASE_URL: postgres://wgpxzziz:BTUTk57yJU9dDzV_JVfBQ52EnXsXCWf7@dumbo.db.elephantsql.com/wgpxzziz?ssl=true
